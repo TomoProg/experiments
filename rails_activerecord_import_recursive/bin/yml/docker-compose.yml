@@ -1,0 +1,76 @@
+version: '3'
+
+volumes:
+  import_experiment_mariadb_volume:
+    driver: 'local'
+
+  import_experiment_postgres_volume:
+    driver: 'local'
+
+  import_experiment_gem_volume:
+    driver: 'local'
+
+services:
+  import_experiment_front:
+    build: ../../front/
+    ports:
+      - "$APP_PORT:$APP_PORT"
+    volumes:
+      - ../../front/scripts:/var/scripts
+    environment:
+      APP_HOST:
+      APP_PORT:
+    container_name: "import_experiment_front"
+    command: /var/scripts/start.sh
+
+  import_experiment_mariadb:
+    build: ../../mariadb/
+    volumes:
+      - import_experiment_mariadb_volume:/var/lib/mysql
+      - ../../mariadb/scripts:/var/scripts
+    environment:
+      DB_NAME: $MARIADB_DB_NAME
+      DB_HOST: $MARIADB_HOST
+      DB_USER: $MARIADB_USER
+      DB_PASS: $MARIADB_PASS
+      MYSQL_ROOT_PASSWORD: 12345678
+    container_name: "import_experiment_mariadb"
+    ports:
+      - "3306:3306"
+
+  import_experiment_postgres:
+    build: ../../postgres/
+    volumes:
+      - import_experiment_postgres_volume:/var/lib/postgresql/data
+      - ../../postgres/scripts:/var/scripts
+    environment:
+      DB_NAME: $POSTGRES_DB_NAME
+      DB_HOST: $POSTGRES_HOST
+      DB_USER: $POSTGRES_USER
+      DB_PASS: $POSTGRES_PASS
+      POSTGRES_PASSWORD: 12345678
+    container_name: "import_experiment_postgres"
+    ports:
+      - "5432:5432"
+
+  import_experiment_web:
+    build: ../../web/
+    volumes:
+      - ../../web/myapp:/myapp
+      - ../../web/scripts:/var/scripts
+      - import_experiment_gem_volume:/usr/local/bundle
+    ports:
+      - "3000:3000"
+    environment:
+      MARIADB_DB_NAME:
+      MARIADB_HOST:
+      MARIADB_USER:
+      MARIADB_PASS:
+      POSTGRES_DB_NAME:
+      POSTGRES_HOST:
+      POSTGRES_USER:
+      POSTGRES_PASS:
+      BUNDLE_APP_CONFIG: /myapp/.bundle
+      RAILS_PRODUCTION_MODE:
+    container_name: "import_experiment_web"
+    command: /var/scripts/entry_point.sh
