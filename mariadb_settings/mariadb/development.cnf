@@ -1,0 +1,19 @@
+[mysqld]
+# log_bin=[name]
+# バイナリログを出力するかどうか
+# コメントアウトを外すとバイナリログが有効になる
+# nameを指定した場合はバイナリログファイルのprefixになる
+# 例：log_bin=binlog
+# binlog.000001
+# binlog.000002
+# ...
+#
+# ファイル名だけを設定した場合はデータディレクトリ (/var/lib/mysql) に書かれる
+# フルパス指定すればデータディレクトリ以外に作ることも可能
+log_bin=binlog
+
+
+# バイナリログのフォーマット
+# ROW, STATEMENT, MIXEDのいずれかを指定可能
+# https://mariadb.com/kb/en/binary-log-formats/
+binlog_format=ROW

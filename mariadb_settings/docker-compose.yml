@@ -1,0 +1,19 @@
+version: '3'
+
+volumes:
+  mariadb_settings_volume:
+    driver: 'local'
+
+services:
+  mariadb_settings:
+    build: ./mariadb/
+    volumes:
+      - mariadb_settings_volume:/var/lib/mysql
+      - ./scripts:/var/scripts
+      - ./data:/var/data
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345678
+    container_name: "mariadb_settings"
+    ports:
+      - "13306:3306"
+
