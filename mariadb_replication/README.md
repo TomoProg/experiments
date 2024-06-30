@@ -1,19 +1,22 @@
-# mariadb_lock
-MariaDBの行ロックの実験用リポジトリ
-- レコードロック
-- ギャップロック
-- ネクストキーロック
+# mariadb_replication
+MariaDBのレプリケーションの実験用リポジトリ
 
-## セットアップの方法
+## 設定ファイル
+- master側の設定ファイル
+master.cnf
 
-### MariaDb or MySQL
+- slave側の設定ファイル
+slave.cnf
+
+## コンテナの立ち上げ方
+
 ```
 # Dockerコンテナのビルド & 立ち上げ
-docker-compose up mariadb_lock --build
+docker-compose up --build
 
-# コンテナの中に入る
-docker exec -it mariadb_lock /bin/bash
+# masterコンテナの中に入る
+docker exec -it mariadb_master /bin/bash
 
-# コンテナの中でスクリプトを流す
-mysql -h localhost -uroot -p12345678 < /var/scripts/setup.sql
+# slaveコンテナの中に入る
+docker exec -it mariadb_slave /bin/bash
 ```
