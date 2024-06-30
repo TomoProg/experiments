@@ -1,0 +1,19 @@
+version: '3'
+
+volumes:
+  maria_db_volume:
+    driver: 'local'
+
+services:
+  maria_db:
+    build: ./maria_db/
+    volumes:
+      - maria_db_volume:/var/lib/mysql
+      - ./scripts:/var/scripts
+      - ./data:/var/data
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345678
+    container_name: "maria_db"
+    ports:
+      - "13306:3306"
+
