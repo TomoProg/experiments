@@ -5,15 +5,19 @@ volumes:
     driver: 'local'
   mariadb_slave_volume:
     driver: 'local'
+  mariadb_slave2_volume:
+    driver: 'local'
 
 services:
   mariadb_master:
-    build: ./mariadb/
+    build: 
+      context: ./mariadb/
+      args: 
+        - config=master
     volumes:
       - mariadb_master_volume:/var/lib/mysql
       - ./scripts:/var/scripts
       - ./data:/var/data
-      - ./mariadb/master.cnf:/etc/mysql/conf.d/master.cnf
     environment:
       MYSQL_ROOT_PASSWORD: 12345678
     container_name: "mariadb_master"
@@ -21,15 +25,31 @@ services:
       - "13306:3306"
 
   mariadb_slave:
-    build: ./mariadb/
+    build: 
+      context: ./mariadb/
+      args: 
+        - config=slave
     volumes:
       - mariadb_slave_volume:/var/lib/mysql
       - ./scripts:/var/scripts
       - ./data:/var/data
-      - ./mariadb/slave.cnf:/etc/mysql/conf.d/slave.cnf
     environment:
       MYSQL_ROOT_PASSWORD: 12345678
     container_name: "mariadb_slave"
     ports:
       - "13307:3306"
 
+  mariadb_slave2:
+    build: 
+      context: ./mariadb/
+      args: 
+        - config=slave2
+    volumes:
+      - mariadb_slave2_volume:/var/lib/mysql
+      - ./scripts:/var/scripts
+      - ./data:/var/data
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345678
+    container_name: "mariadb_slave2"
+    ports:
+      - "13308:3306"
