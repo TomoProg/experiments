@@ -5,8 +5,6 @@ volumes:
     driver: 'local'
   mariadb_slave_volume:
     driver: 'local'
-  mariadb_slave2_volume:
-    driver: 'local'
 
 services:
   mariadb_master:
@@ -38,18 +36,3 @@ services:
     container_name: "mariadb_slave"
     ports:
       - "13307:3306"
-
-  mariadb_slave2:
-    build: 
-      context: ./mariadb/
-      args: 
-        - config=slave2
-    volumes:
-      - mariadb_slave2_volume:/var/lib/mysql
-      - ./scripts:/var/scripts
-      - ./data:/var/data
-    environment:
-      MYSQL_ROOT_PASSWORD: 12345678
-    container_name: "mariadb_slave2"
-    ports:
-      - "13308:3306"

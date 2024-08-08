@@ -1,5 +1,5 @@
 # slave
-[mysqld]
+[mariadb]
 # MariaDBを識別するためのID
 # クラスタ全体で一意の値にしておく必要がある
 server_id=20
