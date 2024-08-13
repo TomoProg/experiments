@@ -21,5 +21,11 @@ docker exec -it mariadb_master /bin/bash
 docker exec -it mariadb_slave /bin/bash
 ```
 
+## master側のデータの投入方法
+
+```
+mariadb -h localhost -uroot -p12345678 < /var/scripts/setup_master.sql
+```
+
 ## 参考
 https://mariadb.com/kb/en/setting-up-replication/
