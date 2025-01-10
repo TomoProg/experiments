@@ -1,0 +1,18 @@
+version: '3'
+
+volumes:
+  db_volume:
+    driver: 'local'
+
+services:
+  db:
+    build: 
+      context: ./mariadb/
+    volumes:
+      - db_volume:/var/lib/mysql
+      - ./scripts:/var/scripts
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345678
+    container_name: "db"
+    ports:
+      - "13306:3306"
